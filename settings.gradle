@@ -1,1 +1,1 @@
-include ':SB1602B_Test', ':android-things-driver'
+include ':SB1602B_Test', ':android-things-driver', ':sensors_test'

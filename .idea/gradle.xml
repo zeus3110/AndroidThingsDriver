@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/SB1602B_Test" />
             <option value="$PROJECT_DIR$/android-things-driver" />
+            <option value="$PROJECT_DIR$/sensors_test" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
