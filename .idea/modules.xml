@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidThingsDriver.iml" filepath="$PROJECT_DIR$/AndroidThingsDriver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SB1602B_Test/SB1602B_Test.iml" filepath="$PROJECT_DIR$/SB1602B_Test/SB1602B_Test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-things-driver/android-things-driver.iml" filepath="$PROJECT_DIR$/android-things-driver/android-things-driver.iml" />
+    </modules>
+  </component>
+</project>

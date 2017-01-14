@@ -1,0 +1,1 @@
+include ':SB1602B_Test', ':android-things-driver'
