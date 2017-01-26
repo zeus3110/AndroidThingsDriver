@@ -19,21 +19,22 @@ package com.zeus3110.android_things_driver.Sensor;
 import android.util.Log;
 
 import com.google.android.things.pio.Gpio;
-import com.google.android.things.pio.GpioCallback;
 import com.google.android.things.pio.PeripheralManagerService;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Queue;
 
-public class MhZ19Pwm implements AutoCloseable {
-    private static final String TAG = MhZ19Pwm.class.getSimpleName();
+import static android.content.ContentValues.TAG;
+import static java.lang.Math.pow;
+
+public class DSM501A implements AutoCloseable {
+    private static final String TAG = DSM501A.class.getSimpleName();
 
     private Gpio mGpio;
-    private long onTime;
 
-    private static final int CO2_MAX_PPM = 5000;
-    private static final int PWM_CYCLE_MS = 1004;
+    private final long MES_CYCLE = 30000;
+
+    private long calcCycleTime_ms = MES_CYCLE;
+    private long calcOnIntegTime_ms = 10 ;
 
     private PulseMesThread mThread;
 
@@ -42,7 +43,7 @@ public class MhZ19Pwm implements AutoCloseable {
      * @param pin GPIO pin name the sensor is connected to.
      * @throws IOException
      */
-    public MhZ19Pwm(String pin) throws IOException {
+    public DSM501A(String pin) throws IOException {
         PeripheralManagerService pioService = new PeripheralManagerService();
         mGpio = pioService.openGpio(pin);
 
@@ -64,32 +65,56 @@ public class MhZ19Pwm implements AutoCloseable {
     }
 
     public long GetPulseWidth() {
-        return onTime;
+        return calcOnIntegTime_ms;
     }
 
-    public int GetCO2PPM() {
-
-        return (int)((CO2_MAX_PPM)*(onTime-2)/(PWM_CYCLE_MS-4));
+    public float GetDustDensity() {
+        float ratio;
+        ratio = (float)(calcOnIntegTime_ms*100.0f/calcCycleTime_ms);
+        return (float)(0.001915* Math.pow(ratio,2) + 0.09522f*ratio - 0.04884);
     }
 
     public class PulseMesThread extends Thread {
 
-        public long mStartTime, mEndTime;
+        public long pulseStartTime_ms, cycleStartTime_ms, cycleTime_ms, currentTime_ms, integOnTime;
+        boolean previosSignal, currentSignal;
         private boolean mRunning = true;
 
+
         public void run() {
+            integOnTime = 0;
+            cycleTime_ms = MES_CYCLE;
+            previosSignal = false;
+
             try {
+                cycleStartTime_ms = System.currentTimeMillis();
                 while (mRunning) {
-                    while (mGpio.getValue() == false) {
-                        mStartTime = System.currentTimeMillis();
+                    currentTime_ms = System.currentTimeMillis();
+                    currentSignal = mGpio.getValue();
+                    if (previosSignal) {
+                        if(!currentSignal) {
+                            integOnTime = integOnTime + (currentTime_ms - pulseStartTime_ms);
+                            previosSignal = false;
+                        }
+                    } else {
+                        if(currentSignal) {
+                            pulseStartTime_ms = currentTime_ms;
+                            previosSignal = true;
+                        }
                     }
 
-                    // falseが返る直前の時間を保持
-                    while (mGpio.getValue() == true) {
-                        mEndTime = System.currentTimeMillis();
+                    cycleTime_ms = currentTime_ms - cycleStartTime_ms;
+                    if(cycleTime_ms >= MES_CYCLE ) {
+                        Log.i(TAG, "Cycle end: " + String.valueOf(cycleTime_ms) + " ms");
+                        // keep value
+                        calcCycleTime_ms = cycleTime_ms;
+                        calcOnIntegTime_ms = integOnTime;
+                        // reset value
+                        integOnTime = 0;
+                        cycleStartTime_ms = currentTime_ms;
+                        previosSignal = false;
                     }
 
-                    onTime = mEndTime - mStartTime;
                 }
 
             } catch (IOException e) {

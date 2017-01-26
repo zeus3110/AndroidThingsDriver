@@ -1,1 +1,1 @@
-include ':SB1602B_Test', ':android-things-driver', ':sensors_test'
+include ':SB1602B_Test', ':android-things-driver', ':sensors_test', ':mhz19_test', ':dsm501a_test'

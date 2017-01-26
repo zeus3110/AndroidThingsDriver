@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/AndroidThingsDriver.iml" filepath="$PROJECT_DIR$/AndroidThingsDriver.iml" />
       <module fileurl="file://$PROJECT_DIR$/SB1602B_Test/SB1602B_Test.iml" filepath="$PROJECT_DIR$/SB1602B_Test/SB1602B_Test.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-things-driver/android-things-driver.iml" filepath="$PROJECT_DIR$/android-things-driver/android-things-driver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dsm501a_test/dsm501a_test.iml" filepath="$PROJECT_DIR$/dsm501a_test/dsm501a_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mhz19_test/mhz19_test.iml" filepath="$PROJECT_DIR$/mhz19_test/mhz19_test.iml" />
       <module fileurl="file://$PROJECT_DIR$/sensors_test/sensors_test.iml" filepath="$PROJECT_DIR$/sensors_test/sensors_test.iml" />
     </modules>
   </component>
