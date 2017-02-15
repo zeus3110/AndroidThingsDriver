@@ -69,9 +69,11 @@ public class DSM501A implements AutoCloseable {
     }
 
     public float GetDustDensity() {
-        float ratio;
+        float ratio,concentration;
         ratio = (float)(calcOnIntegTime_ms*100.0f/calcCycleTime_ms);
-        return (float)(0.001915* Math.pow(ratio,2) + 0.09522f*ratio - 0.04884);
+        concentration=(float)(1.1*pow(ratio,3)-3.8*pow(ratio,2)+520*ratio+0.62);
+        concentration=(concentration>0.0f)?concentration:0.0f;
+        return concentration;
     }
 
     public class PulseMesThread extends Thread {

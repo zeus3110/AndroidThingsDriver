@@ -22,7 +22,7 @@ android {
 }
 
 dependencies {
-    provided 'com.google.android.things:androidthings:0.1-devpreview'
+    provided 'com.google.android.things:androidthings:0.2-devpreview'
     compile 'com.android.support:support-annotations:25.0.0'
 }
 
@@ -34,7 +34,7 @@ uploadArchives {
     repositories {
         mavenDeployer {
             repository url: "file://${repo.absolutePath}"
-            pom.version = '0.0.2'
+            pom.version = '0.0.3'
             pom.groupId = 'com.zeus3110.android.things'
             pom.artifactId = 'android-things-driver'
         }
